@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>SIT Palar Shangla | Student Result System</title>
-    <!-- html2pdf library for PDF download -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <title>SIT Palar Shangla | Complete Student Result System</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -14,57 +15,64 @@
         }
 
         body {
-            font-family: 'Segoe UI', 'Poppins', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(145deg, #e8f0ff 0%, #d4e0f5 100%);
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(145deg, #eef2ff 0%, #e0e7ff 100%);
             min-height: 100vh;
             padding: 20px;
         }
 
         .container {
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto;
         }
 
-        /* Header Section */
+        /* Animated Header */
         .school-header {
-            background: linear-gradient(135deg, #0b2b3b, #1a4a6f);
-            border-radius: 28px;
-            padding: 25px 20px;
+            background: linear-gradient(135deg, #1e1b4b, #2e1065, #4c1d95);
+            border-radius: 32px;
+            padding: 30px 20px;
             text-align: center;
             color: white;
             margin-bottom: 25px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 25px 40px -12px rgba(0,0,0,0.3);
             position: relative;
             overflow: hidden;
+            animation: slideDown 0.6s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         .school-header::before {
-            content: "📚";
+            content: "🎓";
             position: absolute;
-            font-size: 80px;
-            opacity: 0.1;
-            bottom: -10px;
-            right: -10px;
+            font-size: 120px;
+            opacity: 0.08;
+            bottom: -30px;
+            right: -20px;
         }
 
         .school-header h1 {
-            font-size: 1.6rem;
-            margin-bottom: 8px;
-            letter-spacing: 1px;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            font-weight: 700;
         }
 
         .school-header p {
-            font-size: 0.9rem;
+            font-size: 1rem;
             opacity: 0.9;
         }
 
         .motto {
-            background: rgba(255,215,0,0.15);
+            background: rgba(255,215,0,0.2);
             display: inline-block;
-            padding: 5px 15px;
-            border-radius: 40px;
+            padding: 6px 18px;
+            border-radius: 50px;
             margin-top: 12px;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
+            font-weight: 500;
         }
 
         /* Tab Buttons */
@@ -72,49 +80,64 @@
             display: flex;
             gap: 12px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
         .tab-btn {
             flex: 1;
-            padding: 12px;
+            padding: 14px;
             border: none;
-            border-radius: 50px;
-            font-weight: 600;
+            border-radius: 60px;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s;
             background: white;
-            color: #1a4a6f;
-            font-size: 1rem;
-        }
-
-        .tab-btn.active {
-            background: linear-gradient(135deg, #0b2b3b, #1a4a6f);
-            color: white;
-        }
-
-        /* Search Card */
-        .search-card, .add-student-card {
-            background: white;
-            border-radius: 28px;
-            padding: 25px 20px;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            margin-bottom: 25px;
-        }
-
-        .add-student-card {
-            display: none;
-        }
-
-        .search-card label, .add-student-card label {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #1a4a6f;
+            color: #1e1b4b;
+            font-size: 0.95rem;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            margin-bottom: 18px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .tab-btn i {
+            font-size: 1.1rem;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #1e1b4b, #4c1d95);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px -8px rgba(76,29,149,0.4);
+        }
+
+        /* Cards */
+        .search-card, .add-student-card, .manage-card {
+            background: white;
+            border-radius: 32px;
+            padding: 28px 24px;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.15);
+            margin-bottom: 25px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .manage-card { display: none; }
+
+        .search-card label, .add-student-card label, .manage-card label {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1e1b4b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
         .input-group {
@@ -124,134 +147,123 @@
             justify-content: center;
         }
 
-        .input-group input, .add-student-card input {
+        .input-group input, .add-student-card input, .manage-card input, .class-select {
             flex: 1;
-            min-width: 160px;
-            padding: 12px 15px;
-            font-size: 0.9rem;
+            min-width: 180px;
+            padding: 14px 18px;
+            font-size: 0.95rem;
             border: 2px solid #e2e8f0;
-            border-radius: 50px;
+            border-radius: 60px;
             outline: none;
-            text-align: center;
             font-weight: 500;
             transition: all 0.3s;
         }
 
-        .input-group input:focus, .add-student-card input:focus {
-            border-color: #1a4a6f;
-            box-shadow: 0 0 0 3px rgba(26,74,111,0.2);
+        .class-select {
+            background: white;
+            cursor: pointer;
         }
 
-        .input-group button, .add-student-card button {
-            background: linear-gradient(135deg, #0b2b3b, #1a4a6f);
+        .input-group input:focus, .add-student-card input:focus, .class-select:focus {
+            border-color: #4c1d95;
+            box-shadow: 0 0 0 4px rgba(76,29,149,0.15);
+        }
+
+        .input-group button, .add-student-card button, .manage-card button {
+            background: linear-gradient(135deg, #1e1b4b, #4c1d95);
             border: none;
-            padding: 0 25px;
-            border-radius: 50px;
+            padding: 0 28px;
+            border-radius: 60px;
             color: white;
-            font-weight: 600;
-            font-size: 0.9rem;
+            font-weight: 700;
+            font-size: 0.95rem;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.3s;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
-        .input-group button:hover, .add-student-card button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        .input-group button:hover, .add-student-card button:hover, .manage-card button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px -8px #4c1d95;
         }
 
-        .example-hint {
-            font-size: 0.7rem;
-            color: #6c757d;
-            margin-top: 15px;
+        .delete-btn {
+            background: linear-gradient(135deg, #991b1b, #dc2626) !important;
         }
 
-        /* Form Grid for Add Student */
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 15px;
             margin: 20px 0;
         }
 
-        .form-grid input {
+        .form-grid input, .form-grid select {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
             border-radius: 25px;
-            text-align: center;
-        }
-
-        .success-msg {
-            background: #d4edda;
-            color: #155724;
-            padding: 10px;
-            border-radius: 25px;
-            margin-top: 15px;
-            display: none;
+            font-size: 0.9rem;
         }
 
         /* Result Card */
         .result-card {
             background: white;
-            border-radius: 28px;
+            border-radius: 32px;
             overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.2);
             display: none;
-            animation: fadeInUp 0.5s ease;
+            animation: fadeInUp 0.6s ease;
             margin-bottom: 20px;
         }
 
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .result-header {
-            background: linear-gradient(115deg, #1e5a3c, #2d7a4e);
+            background: linear-gradient(115deg, #065f46, #059669, #10b981);
             color: white;
-            padding: 20px;
+            padding: 25px;
             text-align: center;
         }
 
         .result-header h2 {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            font-weight: 700;
         }
 
         .student-badge {
             background: rgba(255,255,255,0.2);
-            display: inline-block;
-            padding: 5px 15px;
-            border-radius: 30px;
-            font-size: 0.8rem;
-            margin-top: 8px;
+            display: inline-flex;
+            gap: 15px;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .detail-row {
             display: flex;
             justify-content: space-between;
-            padding: 12px 20px;
-            border-bottom: 1px solid #f0f0f0;
+            padding: 14px 25px;
+            border-bottom: 1px solid #f1f5f9;
             background: #fefefe;
         }
 
         .detail-row .label {
-            font-weight: 600;
-            color: #2c3e50;
+            font-weight: 700;
+            color: #1e293b;
         }
 
         .detail-row .value {
-            color: #1a4a6f;
-            font-weight: 500;
+            color: #4c1d95;
+            font-weight: 600;
         }
 
         .marks-table {
@@ -260,289 +272,295 @@
         }
 
         .marks-table th {
-            background: #f1f5f9;
-            padding: 12px 8px;
-            font-size: 0.8rem;
+            background: #f8fafc;
+            padding: 14px 10px;
+            font-size: 0.85rem;
             color: #1e293b;
             text-align: center;
+            font-weight: 700;
         }
 
         .marks-table td {
-            padding: 10px 6px;
+            padding: 12px 8px;
             text-align: center;
-            border-bottom: 1px solid #eef2ff;
-            font-size: 0.9rem;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.95rem;
         }
 
         .subject-name {
             font-weight: 600;
             text-align: left !important;
-            padding-left: 15px !important;
+            padding-left: 20px !important;
         }
 
         .total-section {
             background: #f8fafc;
-            padding: 15px 20px;
+            padding: 20px 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 12px;
             border-top: 2px solid #e2e8f0;
         }
 
         .total-box {
-            background: linear-gradient(135deg, #0b2b3b, #1a4a6f);
+            background: linear-gradient(135deg, #1e1b4b, #4c1d95);
             color: white;
-            padding: 10px 20px;
-            border-radius: 40px;
-            font-weight: bold;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 700;
         }
 
         .percentage-box {
-            background: #2d7a4e;
+            background: #059669;
             color: white;
-            padding: 10px 20px;
-            border-radius: 40px;
-            font-weight: bold;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 700;
         }
 
         .download-btn {
-            background: #e67e22;
-            margin-top: 10px;
-            width: 100%;
+            background: linear-gradient(135deg, #ea580c, #f97316);
+            margin: 15px auto;
+            width: calc(100% - 30px);
             justify-content: center;
+            border: none;
+            padding: 14px;
+            border-radius: 60px;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+        }
+
+        .student-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .student-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid #e2e8f0;
+            background: #fefefe;
+            border-radius: 15px;
+            margin-bottom: 8px;
+        }
+
+        .student-item:hover {
+            background: #f1f5f9;
+        }
+
+        .delete-student-btn {
+            background: #dc2626;
+            border: none;
+            padding: 6px 15px;
+            border-radius: 30px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.8rem;
         }
 
         .error-card {
-            background: #fff5f5;
-            border-left: 5px solid #e53e3e;
+            background: #fef2f2;
+            border-left: 5px solid #dc2626;
             padding: 25px;
             border-radius: 28px;
             text-align: center;
-            color: #c53030;
-            display: none;
+            color: #991b1b;
             margin-bottom: 20px;
+        }
+
+        .success-msg {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 12px;
+            border-radius: 30px;
+            margin-top: 15px;
+            display: none;
+            text-align: center;
         }
 
         footer {
             text-align: center;
             padding: 20px;
-            color: #5a6e8a;
-            font-size: 0.7rem;
+            color: #64748b;
+            font-size: 0.75rem;
         }
 
-        @media (max-width: 480px) {
-            .school-header h1 { font-size: 1.2rem; }
-            .input-group input { min-width: 140px; padding: 12px; }
-            .input-group button { padding: 0 20px; }
-            .marks-table th, .marks-table td { font-size: 0.7rem; padding: 8px 3px; }
-            .total-section { flex-direction: column; text-align: center; }
+        @media (max-width: 650px) {
             .form-grid { grid-template-columns: 1fr; }
+            .total-section { flex-direction: column; text-align: center; }
+            .tab-btn { font-size: 0.8rem; padding: 10px; }
+            .school-header h1 { font-size: 1.3rem; }
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="school-header">
-        <h1>🏫 School Of Information & Technology <br> Palar Shangla</h1>
-        <p>🎓 Excellence in Modern Education 🎓</p>
-        <div class="motto">📖 Learn, Innovate, Lead | Session 2025-26</div>
+        <h1><i class="fas fa-graduation-cap"></i> School Of Information & Technology <br> Palar Shangla</h1>
+        <p>🎓 Excellence in Modern Education | Empowering Futures 🎓</p>
+        <div class="motto"><i class="fas fa-book-open"></i> Learn, Innovate, Lead | Session 2025-26</div>
     </div>
 
-    <!-- Tab Buttons -->
     <div class="tab-buttons">
-        <button class="tab-btn active" onclick="showTab('search')">🔍 Search Result</button>
-        <button class="tab-btn" onclick="showTab('add')">➕ Add New Student</button>
+        <button class="tab-btn active" onclick="showTab('search')"><i class="fas fa-search"></i> Search Result</button>
+        <button class="tab-btn" onclick="showTab('add')"><i class="fas fa-user-plus"></i> Add Student</button>
+        <button class="tab-btn" onclick="showTab('manage')"><i class="fas fa-trash-alt"></i> Delete Student</button>
     </div>
 
     <!-- Search Section -->
     <div id="searchSection" class="search-card">
-        <label><span>🔢</span> Please Enter Your Roll Number</label>
+        <label><i class="fas fa-fingerprint"></i> Enter Roll Number</label>
         <div class="input-group">
-            <input type="number" id="rollInput" placeholder="e.g., 4420, 4535, 4628, 4730">
-            <button onclick="searchStudent()">🔍 Search Result</button>
+            <input type="number" id="rollInput" placeholder="e.g., 4401, 4501, 4601, 4701">
+            <button onclick="searchStudent()"><i class="fas fa-search"></i> Search</button>
         </div>
-        <div class="example-hint">
-            💡 Valid Roll: 4401-4450 (Class 4) | 4501-4550 (Class 5) | 4601-4650 (Class 6) | 4701-4750 (Class 7)
+        <div class="example-hint" style="margin-top:15px; font-size:0.75rem; color:#6c757d; text-align:center;">
+            <i class="fas fa-info-circle"></i> Valid Rolls: Class 4 (4401-4450) | Class 5 (4501-4550) | Class 6 (4601-4650) | Class 7 (4701-4750)
         </div>
     </div>
 
     <!-- Add Student Section -->
     <div id="addSection" class="add-student-card">
-        <label><span>➕</span> Add New Student Record</label>
+        <label><i class="fas fa-plus-circle"></i> Add New Student Record</label>
         <div class="form-grid">
-            <input type="number" id="newRoll" placeholder="Roll Number (e.g., 4751)">
-            <input type="text" id="newName" placeholder="Student Name">
-            <input type="text" id="newFather" placeholder="Father Name">
-            <input type="number" id="newClass" placeholder="Class (4/5/6/7)">
-            <input type="number" id="newEng" placeholder="English Marks (100)">
-            <input type="number" id="newUrdu" placeholder="Urdu Marks (100)">
-            <input type="number" id="newSci" placeholder="Science Marks (85)">
-            <input type="number" id="newMath" placeholder="Math Marks (80)">
-            <input type="number" id="newIsl" placeholder="Islamyat Marks (100)">
-            <input type="number" id="newPas" placeholder="Pashto Marks (100)">
+            <input type="number" id="newRoll" placeholder="Roll Number">
+            <input type="text" id="newName" placeholder="Full Student Name">
+            <input type="text" id="newFather" placeholder="Father's Full Name">
+            <select id="newClass" class="class-select">
+                <option value="">Select Class</option>
+                <option value="4">Class 4</option>
+                <option value="5">Class 5</option>
+                <option value="6">Class 6</option>
+                <option value="7">Class 7</option>
+                <option value="8">Class 8 (New)</option>
+                <option value="9">Class 9 (New)</option>
+                <option value="10">Class 10 (New)</option>
+            </select>
+            <input type="number" id="newEng" placeholder="English (100)">
+            <input type="number" id="newUrdu" placeholder="Urdu (100)">
+            <input type="number" id="newSci" placeholder="Science (85)">
+            <input type="number" id="newMath" placeholder="Math (80)">
+            <input type="number" id="newIsl" placeholder="Islamyat (100)">
+            <input type="number" id="newPas" placeholder="Pashto (100)">
         </div>
-        <button onclick="addNewStudent()">💾 Save Student Record</button>
-        <div id="successMsg" class="success-msg">✅ Student added successfully!</div>
+        <button onclick="addNewStudent()"><i class="fas fa-save"></i> Save Record</button>
+        <div id="successMsg" class="success-msg"><i class="fas fa-check-circle"></i> Student added successfully!</div>
+    </div>
+
+    <!-- Manage/Delete Section -->
+    <div id="manageSection" class="manage-card">
+        <label><i class="fas fa-trash-alt"></i> Delete Student Record</label>
+        <div class="input-group" style="margin-bottom:20px;">
+            <input type="number" id="deleteRoll" placeholder="Enter Roll Number to Delete">
+            <button class="delete-btn" onclick="deleteStudent()"><i class="fas fa-trash"></i> Delete Student</button>
+        </div>
+        <div id="studentList" class="student-list"></div>
     </div>
 
     <div id="resultArea"></div>
     <footer>
-        © 2025 SIT Palar Shangla | Student Information System | All Rights Reserved
+        <i class="far fa-copyright"></i> 2025 SIT Palar Shangla | Complete Student Management System
     </footer>
 </div>
 
 <script>
-    // Load existing students from localStorage or use default
     let studentsDatabase = [];
-
-    // Default subjects
     const subjects = ["English", "Urdu", "Science", "Math", "Islamyat", "Pashto"];
     const maxMarks = [100, 100, 85, 80, 100, 100];
 
-    // Helper to add student
-    function addStudentToDB(roll, name, father, classNo, eng, urd, sci, math, isl, pas) {
-        studentsDatabase.push({
-            rollNo: roll,
-            name: name,
-            fatherName: father,
-            class: classNo,
-            marks: [eng, urd, sci, math, isl, pas]
-        });
-        saveToLocalStorage();
-    }
-
-    // Save to localStorage
     function saveToLocalStorage() {
-        localStorage.setItem('sitStudents', JSON.stringify(studentsDatabase));
+        localStorage.setItem('sitStudentsComplete', JSON.stringify(studentsDatabase));
     }
 
-    // Load from localStorage
     function loadFromLocalStorage() {
-        const saved = localStorage.getItem('sitStudents');
+        const saved = localStorage.getItem('sitStudentsComplete');
         if(saved && JSON.parse(saved).length > 0) {
             studentsDatabase = JSON.parse(saved);
         } else {
             initDefaultDatabase();
         }
+        refreshStudentList();
     }
 
-    // Initialize default database (all your 200 students)
     function initDefaultDatabase() {
         studentsDatabase = [];
+        // Class 4 Students (4401-4450 Full Data)
+        const class4Data = [
+            [4401,"Ahmed Ali","Irfan Khan",85,78,72,65,92,88],[4402,"Bilal Khan","Saeed Ahmed",60,65,55,40,75,80],
+            [4403,"Hamza Shah","Wali Muhammad",92,88,80,78,95,94],[4404,"Usman Ghani","Abdul Rashid",45,50,40,35,60,55],
+            [4405,"Zeeshan Ali","Liaquat Ali",78,72,68,60,85,82],[4406,"Abdullah","Muhammad Jan",88,84,75,72,90,91],
+            [4407,"Faisal Khan","Gul Khan",55,60,48,44,70,65],[4408,"Jawad Ahmed","Nazir Ahmed",70,75,62,58,80,78],
+            [4409,"Saad Bin Zaid","Zaid Ullah",95,92,83,79,98,96],[4410,"Umar Farooq","Khalid Mehmood",82,80,70,68,88,85],
+            [4411,"Hassan Raza","Ghulam Abbas",66,70,58,52,74,72],[4412,"Salman Khan","Sher Khan",40,45,38,32,55,60],
+            [4413,"Adil Shah","Akbar Shah",74,78,65,61,82,80],[4414,"Kashif Ali","Anwar Ali",89,85,77,74,91,89],
+            [4415,"Nasir Khan","Fazal Wahid",58,62,50,46,68,70],[4416,"Waqas Ahmed","Mushtaq Ahmed",81,79,69,65,86,84],
+            [4417,"Haris Mehmood","Mehmood Khan",93,90,81,77,96,95],[4418,"Taimur Ali","Shaukat Ali",62,58,55,50,72,74],
+            [4419,"Asad Ullah","Habib Ullah",77,75,66,62,84,81],[4420,"Yasir Arafat","Amanullah",85,82,72,70,89,87],
+            [4421,"Naveed Khan","Pervaiz Khan",50,55,45,41,65,68],[4422,"Sajid Ali","Barkat Ali",68,72,60,56,78,75],
+            [4423,"Mansoor Ahmed","Zahoor Ahmed",86,84,74,71,90,92],[4424,"Rizwan Shah","Syed Shah",72,70,63,59,81,79],
+            [4425,"Zubair Ali","Murad Ali",91,89,80,76,94,93],[4426,"Farhan Saeed","Saeed Khan",64,60,52,48,73,71],
+            [4427,"Kamran Khan","Jahan Khan",79,76,67,63,85,83],[4428,"Shoaib Malik","Tariq Malik",83,81,71,67,87,86],
+            [4429,"Arsalan Ahmed","Bashir Ahmed",55,50,48,42,68,65],[4430,"Talha Bin Aziz","Aziz ur Rehman",94,92,82,78,97,95],
+            [4431,"Daniyal Khan","Hayat Khan",71,74,64,60,80,78],[4432,"Mudassir Ali","Farman Ali",87,85,76,72,92,90],
+            [4433,"Shehzad Gul","Gul Badshah",48,52,42,38,62,64],[4434,"Waqar Ali","Sabir Ali",76,73,66,61,83,81],
+            [4435,"Atif Aslam","Muhammad Aslam",80,78,70,66,86,84],[4436,"Mubashir Khan","Sultan Khan",63,67,56,51,75,72],
+            [4437,"Israr Ahmed","Nisar Ahmed",88,86,78,74,91,89],[4438,"Rashid Ali","Sher Ali",52,58,46,40,66,68],
+            [4439,"Sohail Khan","Amir Khan",73,70,62,58,80,77],[4440,"Junaid Khan","Rustam Khan",90,88,79,75,93,91],
+            [4441,"Ahsan Shah","Pir Shah",67,64,58,54,77,75],[4442,"Sameer Ali","Haider Ali",84,82,73,69,88,86],
+            [4443,"Fawad Ahmed","Imtiaz Ahmed",59,55,50,44,70,72],[4444,"Ibrahim Khan","Musa Khan",96,94,84,80,99,98],
+            [4445,"Khurram Shah","Zahid Shah",75,71,65,62,82,80],[4446,"Shayan Ali","Murtaza Ali",81,79,70,66,87,85],
+            [4447,"Mohsin Khan","Dilawar Khan",42,48,39,34,58,62],[4448,"Azlan Ahmed","Rashid Ahmed",89,86,77,73,91,90],
+            [4449,"Rohail Khan","Farooq Khan",61,65,54,49,74,71],[4450,"Shahzaib Ali","Amjad Ali",77,74,68,64,84,82]
+        ];
+        for(let s of class4Data) studentsDatabase.push({rollNo:s[0], name:s[1], fatherName:s[2], class:4, marks:[s[3],s[4],s[5],s[6],s[7],s[8]]});
         
-        // CLASS 4 (4401-4450)
-        for(let i=4401; i<=4450; i++) addStudentToDB(i, "Student " + i, "Father Name", 4, 70, 70, 60, 55, 75, 72);
+        // Class 5 Sample
+        studentsDatabase.push({rollNo:4501, name:"Abdullah Khan", fatherName:"Muhammad Rafiq", class:5, marks:[82,75,68,62,90,85]});
+        studentsDatabase.push({rollNo:4502, name:"Zayan Ahmed", fatherName:"Shakeel Ahmed", class:5, marks:[45,52,40,35,65,58]});
+        studentsDatabase.push({rollNo:4503, name:"Meerab Shah", fatherName:"Syed Wali", class:5, marks:[94,88,81,77,96,92]});
         
-        // Override with actual data (simplified - your full data is here)
-        addStudentToDB(4401,"Ahmed Ali","Irfan Khan",4,85,78,72,65,92,88);
-        addStudentToDB(4402,"Bilal Khan","Saeed Ahmed",4,60,65,55,40,75,80);
-        addStudentToDB(4403,"Hamza Shah","Wali Muhammad",4,92,88,80,78,95,94);
-        addStudentToDB(4404,"Usman Ghani","Abdul Rashid",4,45,50,40,35,60,55);
-        addStudentToDB(4405,"Zeeshan Ali","Liaquat Ali",4,78,72,68,60,85,82);
-        addStudentToDB(4406,"Abdullah","Muhammad Jan",4,88,84,75,72,90,91);
-        addStudentToDB(4407,"Faisal Khan","Gul Khan",4,55,60,48,44,70,65);
-        addStudentToDB(4408,"Jawad Ahmed","Nazir Ahmed",4,70,75,62,58,80,78);
-        addStudentToDB(4409,"Saad Bin Zaid","Zaid Ullah",4,95,92,83,79,98,96);
-        addStudentToDB(4410,"Umar Farooq","Khalid Mehmood",4,82,80,70,68,88,85);
-        addStudentToDB(4411,"Hassan Raza","Ghulam Abbas",4,66,70,58,52,74,72);
-        addStudentToDB(4412,"Salman Khan","Sher Khan",4,40,45,38,32,55,60);
-        addStudentToDB(4413,"Adil Shah","Akbar Shah",4,74,78,65,61,82,80);
-        addStudentToDB(4414,"Kashif Ali","Anwar Ali",4,89,85,77,74,91,89);
-        addStudentToDB(4415,"Nasir Khan","Fazal Wahid",4,58,62,50,46,68,70);
-        addStudentToDB(4416,"Waqas Ahmed","Mushtaq Ahmed",4,81,79,69,65,86,84);
-        addStudentToDB(4417,"Haris Mehmood","Mehmood Khan",4,93,90,81,77,96,95);
-        addStudentToDB(4418,"Taimur Ali","Shaukat Ali",4,62,58,55,50,72,74);
-        addStudentToDB(4419,"Asad Ullah","Habib Ullah",4,77,75,66,62,84,81);
-        addStudentToDB(4420,"Yasir Arafat","Amanullah",4,85,82,72,70,89,87);
-        addStudentToDB(4421,"Naveed Khan","Pervaiz Khan",4,50,55,45,41,65,68);
-        addStudentToDB(4422,"Sajid Ali","Barkat Ali",4,68,72,60,56,78,75);
-        addStudentToDB(4423,"Mansoor Ahmed","Zahoor Ahmed",4,86,84,74,71,90,92);
-        addStudentToDB(4424,"Rizwan Shah","Syed Shah",4,72,70,63,59,81,79);
-        addStudentToDB(4425,"Zubair Ali","Murad Ali",4,91,89,80,76,94,93);
-        addStudentToDB(4426,"Farhan Saeed","Saeed Khan",4,64,60,52,48,73,71);
-        addStudentToDB(4427,"Kamran Khan","Jahan Khan",4,79,76,67,63,85,83);
-        addStudentToDB(4428,"Shoaib Malik","Tariq Malik",4,83,81,71,67,87,86);
-        addStudentToDB(4429,"Arsalan Ahmed","Bashir Ahmed",4,55,50,48,42,68,65);
-        addStudentToDB(4430,"Talha Bin Aziz","Aziz ur Rehman",4,94,92,82,78,97,95);
-        addStudentToDB(4431,"Daniyal Khan","Hayat Khan",4,71,74,64,60,80,78);
-        addStudentToDB(4432,"Mudassir Ali","Farman Ali",4,87,85,76,72,92,90);
-        addStudentToDB(4433,"Shehzad Gul","Gul Badshah",4,48,52,42,38,62,64);
-        addStudentToDB(4434,"Waqar Ali","Sabir Ali",4,76,73,66,61,83,81);
-        addStudentToDB(4435,"Atif Aslam","Muhammad Aslam",4,80,78,70,66,86,84);
-        addStudentToDB(4436,"Mubashir Khan","Sultan Khan",4,63,67,56,51,75,72);
-        addStudentToDB(4437,"Israr Ahmed","Nisar Ahmed",4,88,86,78,74,91,89);
-        addStudentToDB(4438,"Rashid Ali","Sher Ali",4,52,58,46,40,66,68);
-        addStudentToDB(4439,"Sohail Khan","Amir Khan",4,73,70,62,58,80,77);
-        addStudentToDB(4440,"Junaid Khan","Rustam Khan",4,90,88,79,75,93,91);
-        addStudentToDB(4441,"Ahsan Shah","Pir Shah",4,67,64,58,54,77,75);
-        addStudentToDB(4442,"Sameer Ali","Haider Ali",4,84,82,73,69,88,86);
-        addStudentToDB(4443,"Fawad Ahmed","Imtiaz Ahmed",4,59,55,50,44,70,72);
-        addStudentToDB(4444,"Ibrahim Khan","Musa Khan",4,96,94,84,80,99,98);
-        addStudentToDB(4445,"Khurram Shah","Zahid Shah",4,75,71,65,62,82,80);
-        addStudentToDB(4446,"Shayan Ali","Murtaza Ali",4,81,79,70,66,87,85);
-        addStudentToDB(4447,"Mohsin Khan","Dilawar Khan",4,42,48,39,34,58,62);
-        addStudentToDB(4448,"Azlan Ahmed","Rashid Ahmed",4,89,86,77,73,91,90);
-        addStudentToDB(4449,"Rohail Khan","Farooq Khan",4,61,65,54,49,74,71);
-        addStudentToDB(4450,"Shahzaib Ali","Amjad Ali",4,77,74,68,64,84,82);
-
-        // CLASS 5 (4501-4550) - Sample, add more as needed
-        for(let i=4501; i<=4510; i++) addStudentToDB(i,"Class 5 Student "+i,"Father",5,70,70,60,55,75,72);
-        addStudentToDB(4501,"Abdullah Khan","Muhammad Rafiq",5,82,75,68,62,90,85);
-        addStudentToDB(4502,"Zayan Ahmed","Shakeel Ahmed",5,45,52,40,35,65,58);
-        addStudentToDB(4503,"Meerab Shah","Syed Wali",5,94,88,81,77,96,92);
+        // Class 6 Sample
+        studentsDatabase.push({rollNo:4601, name:"Abid Zaman", fatherName:"Noor Zaman", class:6, marks:[78,82,65,58,88,85]});
+        studentsDatabase.push({rollNo:4602, name:"Bakhtawar Ali", fatherName:"Sher Ali", class:6, marks:[55,60,45,40,72,70]});
         
-        // CLASS 6 (4601-4650)
-        for(let i=4601; i<=4610; i++) addStudentToDB(i,"Class 6 Student "+i,"Father",6,70,70,60,55,75,72);
-        addStudentToDB(4601,"Abid Zaman","Noor Zaman",6,78,82,65,58,88,85);
-        addStudentToDB(4602,"Bakhtawar Ali","Sher Ali",6,55,60,45,40,72,70);
+        // Class 7 Sample
+        studentsDatabase.push({rollNo:4701, name:"Aftab Gul", fatherName:"Gul Faraz", class:7, marks:[76,80,62,55,89,84]});
+        studentsDatabase.push({rollNo:4702, name:"Barkat Ullah", fatherName:"Niamat Ullah", class:7, marks:[58,62,48,42,70,71]});
         
-        // CLASS 7 (4701-4750)
-        for(let i=4701; i<=4710; i++) addStudentToDB(i,"Class 7 Student "+i,"Father",7,70,70,60,55,75,72);
-        addStudentToDB(4701,"Aftab Gul","Gul Faraz",7,76,80,62,55,89,84);
-        addStudentToDB(4702,"Barkat Ullah","Niamat Ullah",7,58,62,48,42,70,71);
+        saveToLocalStorage();
     }
 
-    // Calculate total and percentage
-    function calculateTotal(marks) {
-        let total = 0;
-        for(let i=0; i<marks.length; i++) total += marks[i];
-        return total;
-    }
-
+    function calculateTotal(marks) { return marks.reduce((a,b)=>a+b,0); }
     function calculatePercentage(marks) {
         let total = calculateTotal(marks);
         let maxTotal = maxMarks.reduce((a,b)=>a+b,0);
         return ((total / maxTotal) * 100).toFixed(1);
     }
-
     function getGrade(percentage) {
-        if(percentage >= 85) return { letter: 'A+', color: '#2d7a4e' };
-        if(percentage >= 75) return { letter: 'A', color: '#2d7a4e' };
-        if(percentage >= 65) return { letter: 'B', color: '#1a4a6f' };
-        if(percentage >= 50) return { letter: 'C', color: '#e67e22' };
-        if(percentage >= 40) return { letter: 'D', color: '#e67e22' };
-        return { letter: 'F', color: '#e53e3e' };
+        if(percentage >= 85) return { letter: 'A+', color: '#059669' };
+        if(percentage >= 75) return { letter: 'A', color: '#059669' };
+        if(percentage >= 65) return { letter: 'B', color: '#4c1d95' };
+        if(percentage >= 50) return { letter: 'C', color: '#ea580c' };
+        if(percentage >= 40) return { letter: 'D', color: '#ea580c' };
+        return { letter: 'F', color: '#dc2626' };
     }
 
-    // Search Student
     function searchStudent() {
         const rollNo = parseInt(document.getElementById('rollInput').value);
         const resultArea = document.getElementById('resultArea');
-        
-        if(isNaN(rollNo)) {
-            showError("Please enter a valid Roll Number");
-            return;
-        }
-        
+        if(isNaN(rollNo)) { showError("Please enter a valid Roll Number!"); return; }
         const student = studentsDatabase.find(s => s.rollNo === rollNo);
-        
-        if(student) {
-            displayResult(student);
-        } else {
-            showError(`Student with Roll Number ${rollNo} not found!`);
-        }
+        if(student) displayResult(student);
+        else showError(`❌ Student with Roll Number ${rollNo} not found!`);
     }
 
     function displayResult(student) {
@@ -550,81 +568,39 @@
         const percentage = calculatePercentage(student.marks);
         const grade = getGrade(percentage);
         const maxTotal = maxMarks.reduce((a,b)=>a+b,0);
-        
         let marksRows = '';
-        for(let i=0; i<subjects.length; i++) {
-            marksRows += `
-                <tr>
-                    <td class="subject-name">${subjects[i]} (${maxMarks[i]})</td>
-                    <td>${student.marks[i]}</td>
-                </tr>
-            `;
-        }
+        for(let i=0; i<subjects.length; i++) marksRows += `<tr><td class="subject-name">${subjects[i]} (${maxMarks[i]})</td><td><strong>${student.marks[i]}</strong></td></tr>`;
         
         const resultHTML = `
             <div class="result-card" id="transcriptCard">
                 <div class="result-header">
-                    <h2>🎓 ${student.name}</h2>
-                    <div class="student-badge">Roll No: ${student.rollNo} | Class: ${student.class}</div>
+                    <h2><i class="fas fa-user-graduate"></i> ${student.name}</h2>
+                    <div class="student-badge"><span><i class="fas fa-id-card"></i> Roll: ${student.rollNo}</span><span><i class="fas fa-chalkboard"></i> Class: ${student.class}</span></div>
                 </div>
-                <div class="detail-row">
-                    <span class="label">👨 Father's Name:</span>
-                    <span class="value">${student.fatherName}</span>
-                </div>
-                <div class="detail-row">
-                    <span class="label">🏫 Class:</span>
-                    <span class="value">${student.class}</span>
-                </div>
-                <table class="marks-table">
-                    <thead>
-                        <tr><th>Subject (Max Marks)</th><th>Obtained Marks</th></tr>
-                    </thead>
-                    <tbody>
-                        ${marksRows}
-                    </tbody>
-                </table>
+                <div class="detail-row"><span class="label"><i class="fas fa-user"></i> Father's Name:</span><span class="value">${student.fatherName}</span></div>
+                <div class="detail-row"><span class="label"><i class="fas fa-school"></i> Class:</span><span class="value">${student.class}</span></div>
+                <table class="marks-table"><thead><tr><th>Subject (Max Marks)</th><th>Obtained Marks</th></tr></thead><tbody>${marksRows}</tbody></table>
                 <div class="total-section">
-                    <div class="total-box">📊 Total: ${total} / ${maxTotal}</div>
-                    <div class="percentage-box">📈 Percentage: ${percentage}%</div>
-                    <div class="percentage-box" style="background:${grade.color}">🏅 Grade: ${grade.letter}</div>
+                    <div class="total-box"><i class="fas fa-chart-line"></i> Total: ${total} / ${maxTotal}</div>
+                    <div class="percentage-box"><i class="fas fa-percent"></i> Percentage: ${percentage}%</div>
+                    <div class="percentage-box" style="background:${grade.color}"><i class="fas fa-star"></i> Grade: ${grade.letter}</div>
                 </div>
-                <button class="download-btn" onclick="downloadPDF()" style="background:#e67e22; border:none; padding:12px; margin:15px auto; width:calc(100% - 30px); border-radius:50px; color:white; font-weight:bold; cursor:pointer;">📥 Download Transcript as PDF</button>
-            </div>
-        `;
-        
+                <button class="download-btn" onclick="downloadPDF()"><i class="fas fa-download"></i> Download Transcript as PDF</button>
+            </div>`;
         document.getElementById('resultArea').innerHTML = resultHTML;
         document.querySelector('.result-card').style.display = 'block';
-        document.querySelector('.error-card')?.remove();
-        
-        // Store current student for PDF download
         window.currentStudent = student;
     }
 
-    function showError(msg) {
-        const resultArea = document.getElementById('resultArea');
-        resultArea.innerHTML = `
-            <div class="error-card" style="display:block">
-                <h3>❌ Student Not Found</h3>
-                <p>${msg}</p>
-                <p style="margin-top:10px">💡 Valid Roll Numbers: 4401-4450 (Class 4), 4501-4550 (Class 5), 4601-4650 (Class 6), 4701-4750 (Class 7)</p>
-            </div>
-        `;
-    }
-
-    // PDF Download
     function downloadPDF() {
         const element = document.getElementById('transcriptCard');
-        const opt = {
-            margin: [0.5, 0.5, 0.5, 0.5],
-            filename: `Transcript_${window.currentStudent?.rollNo || 'Student'}.pdf`,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, letterRendering: true },
-            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-        };
-        html2pdf().set(opt).from(element).save();
+        html2pdf().set({ margin: 0.5, filename: `Transcript_${window.currentStudent?.rollNo}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } }).from(element).save();
     }
 
-    // Add New Student
+    function showError(msg) {
+        document.getElementById('resultArea').innerHTML = `<div class="error-card"><i class="fas fa-exclamation-triangle"></i> <h3>${msg}</h3></div>`;
+    }
+
     function addNewStudent() {
         const roll = parseInt(document.getElementById('newRoll').value);
         const name = document.getElementById('newName').value;
@@ -641,61 +617,65 @@
             alert("Please fill all fields correctly!");
             return;
         }
+        if(studentsDatabase.some(s => s.rollNo === roll)) { alert("Roll Number already exists!"); return; }
         
-        if(studentsDatabase.some(s => s.rollNo === roll)) {
-            alert("Student with this Roll Number already exists!");
-            return;
-        }
-        
-        addStudentToDB(roll, name, father, classNo, eng, urd, sci, math, isl, pas);
-        
-        // Show success message
-        const msgDiv = document.getElementById('successMsg');
-        msgDiv.style.display = 'block';
-        setTimeout(() => { msgDiv.style.display = 'none'; }, 3000);
-        
-        // Clear form
-        document.getElementById('newRoll').value = '';
-        document.getElementById('newName').value = '';
-        document.getElementById('newFather').value = '';
-        document.getElementById('newClass').value = '';
-        document.getElementById('newEng').value = '';
-        document.getElementById('newUrdu').value = '';
-        document.getElementById('newSci').value = '';
-        document.getElementById('newMath').value = '';
-        document.getElementById('newIsl').value = '';
-        document.getElementById('newPas').value = '';
-        
+        studentsDatabase.push({ rollNo:roll, name:name, fatherName:father, class:classNo, marks:[eng,urd,sci,math,isl,pas] });
+        saveToLocalStorage();
+        refreshStudentList();
+        document.getElementById('successMsg').style.display = 'block';
+        setTimeout(() => document.getElementById('successMsg').style.display = 'none', 3000);
+        document.querySelectorAll('#addSection input, #addSection select').forEach(el => el.value = '');
         alert(`✅ Student ${name} (Roll: ${roll}) added successfully!`);
     }
 
-    // Tab Switching
-    function showTab(tab) {
-        const searchSection = document.getElementById('searchSection');
-        const addSection = document.getElementById('addSection');
-        const tabs = document.querySelectorAll('.tab-btn');
-        
-        tabs.forEach(t => t.classList.remove('active'));
-        
-        if(tab === 'search') {
-            searchSection.style.display = 'block';
-            addSection.style.display = 'none';
-            tabs[0].classList.add('active');
-        } else {
-            searchSection.style.display = 'none';
-            addSection.style.display = 'block';
-            tabs[1].classList.add('active');
+    function deleteStudent() {
+        const roll = parseInt(document.getElementById('deleteRoll').value);
+        if(isNaN(roll)) { alert("Please enter a valid Roll Number!"); return; }
+        const index = studentsDatabase.findIndex(s => s.rollNo === roll);
+        if(index === -1) { alert("Student not found!"); return; }
+        if(confirm(`Are you sure you want to delete ${studentsDatabase[index].name}?`)) {
+            studentsDatabase.splice(index,1);
+            saveToLocalStorage();
+            refreshStudentList();
+            document.getElementById('deleteRoll').value = '';
+            alert("Student deleted successfully!");
+            document.getElementById('resultArea').innerHTML = '';
         }
     }
 
-    // Enter key press
-    document.getElementById('rollInput').addEventListener('keypress', function(e) {
-        if(e.key === 'Enter') searchStudent();
-    });
+    function refreshStudentList() {
+        const listDiv = document.getElementById('studentList');
+        if(!listDiv) return;
+        if(studentsDatabase.length === 0) { listDiv.innerHTML = '<p style="text-align:center">No students found.</p>'; return; }
+        let html = '';
+        studentsDatabase.forEach(s => { html += `<div class="student-item"><span><strong>${s.rollNo}</strong> | ${s.name} | Class ${s.class}</span><button class="delete-student-btn" onclick="deleteByRoll(${s.rollNo})"><i class="fas fa-trash"></i> Delete</button></div>`; });
+        listDiv.innerHTML = html;
+    }
 
-    // Initialize
+    window.deleteByRoll = function(roll) {
+        if(confirm(`Delete student with Roll ${roll}?`)) {
+            const index = studentsDatabase.findIndex(s => s.rollNo === roll);
+            if(index !== -1) studentsDatabase.splice(index,1);
+            saveToLocalStorage();
+            refreshStudentList();
+            document.getElementById('resultArea').innerHTML = '';
+            alert("Deleted!");
+        }
+    }
+
+    function showTab(tab) {
+        const searchSec = document.getElementById('searchSection');
+        const addSec = document.getElementById('addSection');
+        const manageSec = document.getElementById('manageSection');
+        const tabs = document.querySelectorAll('.tab-btn');
+        tabs.forEach(t => t.classList.remove('active'));
+        if(tab === 'search') { searchSec.style.display = 'block'; addSec.style.display = 'none'; manageSec.style.display = 'none'; tabs[0].classList.add('active'); }
+        else if(tab === 'add') { searchSec.style.display = 'none'; addSec.style.display = 'block'; manageSec.style.display = 'none'; tabs[1].classList.add('active'); }
+        else { searchSec.style.display = 'none'; addSec.style.display = 'none'; manageSec.style.display = 'block'; tabs[2].classList.add('active'); refreshStudentList(); }
+    }
+
+    document.getElementById('rollInput')?.addEventListener('keypress', e => { if(e.key === 'Enter') searchStudent(); });
     loadFromLocalStorage();
-    if(studentsDatabase.length === 0) initDefaultDatabase();
 </script>
 </body>
 </html>
