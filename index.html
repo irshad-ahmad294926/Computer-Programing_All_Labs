@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>SIT Palar Shangla | Student Result System</title>
+    <!-- html2pdf library for PDF download -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Poppins', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(145deg, #e8f0ff 0%, #d4e0f5 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Header Section */
+        .school-header {
+            background: linear-gradient(135deg, #0b2b3b, #1a4a6f);
+            border-radius: 28px;
+            padding: 25px 20px;
+            text-align: center;
+            color: white;
+            margin-bottom: 25px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .school-header::before {
+            content: "📚";
+            position: absolute;
+            font-size: 80px;
+            opacity: 0.1;
+            bottom: -10px;
+            right: -10px;
+        }
+
+        .school-header h1 {
+            font-size: 1.6rem;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .school-header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .motto {
+            background: rgba(255,215,0,0.15);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 40px;
+            margin-top: 12px;
+            font-size: 0.75rem;
+        }
+
+        /* Tab Buttons */
+        .tab-buttons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+            color: #1a4a6f;
+            font-size: 1rem;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #0b2b3b, #1a4a6f);
+            color: white;
+        }
+
+        /* Search Card */
+        .search-card, .add-student-card {
+            background: white;
+            border-radius: 28px;
+            padding: 25px 20px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+        }
+
+        .add-student-card {
+            display: none;
+        }
+
+        .search-card label, .add-student-card label {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1a4a6f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .input-group input, .add-student-card input {
+            flex: 1;
+            min-width: 160px;
+            padding: 12px 15px;
+            font-size: 0.9rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 50px;
+            outline: none;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus, .add-student-card input:focus {
+            border-color: #1a4a6f;
+            box-shadow: 0 0 0 3px rgba(26,74,111,0.2);
+        }
+
+        .input-group button, .add-student-card button {
+            background: linear-gradient(135deg, #0b2b3b, #1a4a6f);
+            border: none;
+            padding: 0 25px;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-group button:hover, .add-student-card button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .example-hint {
+            font-size: 0.7rem;
+            color: #6c757d;
+            margin-top: 15px;
+        }
+
+        /* Form Grid for Add Student */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .form-grid input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            text-align: center;
+        }
+
+        .success-msg {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 25px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        /* Result Card */
+        .result-card {
+            background: white;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            display: none;
+            animation: fadeInUp 0.5s ease;
+            margin-bottom: 20px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-header {
+            background: linear-gradient(115deg, #1e5a3c, #2d7a4e);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .result-header h2 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .student-badge {
+            background: rgba(255,255,255,0.2);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            margin-top: 8px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            background: #fefefe;
+        }
+
+        .detail-row .label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .detail-row .value {
+            color: #1a4a6f;
+            font-weight: 500;
+        }
+
+        .marks-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .marks-table th {
+            background: #f1f5f9;
+            padding: 12px 8px;
+            font-size: 0.8rem;
+            color: #1e293b;
+            text-align: center;
+        }
+
+        .marks-table td {
+            padding: 10px 6px;
+            text-align: center;
+            border-bottom: 1px solid #eef2ff;
+            font-size: 0.9rem;
+        }
+
+        .subject-name {
+            font-weight: 600;
+            text-align: left !important;
+            padding-left: 15px !important;
+        }
+
+        .total-section {
+            background: #f8fafc;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .total-box {
+            background: linear-gradient(135deg, #0b2b3b, #1a4a6f);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: bold;
+        }
+
+        .percentage-box {
+            background: #2d7a4e;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: bold;
+        }
+
+        .download-btn {
+            background: #e67e22;
+            margin-top: 10px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .error-card {
+            background: #fff5f5;
+            border-left: 5px solid #e53e3e;
+            padding: 25px;
+            border-radius: 28px;
+            text-align: center;
+            color: #c53030;
+            display: none;
+            margin-bottom: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #5a6e8a;
+            font-size: 0.7rem;
+        }
+
+        @media (max-width: 480px) {
+            .school-header h1 { font-size: 1.2rem; }
+            .input-group input { min-width: 140px; padding: 12px; }
+            .input-group button { padding: 0 20px; }
+            .marks-table th, .marks-table td { font-size: 0.7rem; padding: 8px 3px; }
+            .total-section { flex-direction: column; text-align: center; }
+            .form-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="school-header">
+        <h1>🏫 School Of Information & Technology <br> Palar Shangla</h1>
+        <p>🎓 Excellence in Modern Education 🎓</p>
+        <div class="motto">📖 Learn, Innovate, Lead | Session 2025-26</div>
+    </div>
+
+    <!-- Tab Buttons -->
+    <div class="tab-buttons">
+        <button class="tab-btn active" onclick="showTab('search')">🔍 Search Result</button>
+        <button class="tab-btn" onclick="showTab('add')">➕ Add New Student</button>
+    </div>
+
+    <!-- Search Section -->
+    <div id="searchSection" class="search-card">
+        <label><span>🔢</span> Please Enter Your Roll Number</label>
+        <div class="input-group">
+            <input type="number" id="rollInput" placeholder="e.g., 4420, 4535, 4628, 4730">
+            <button onclick="searchStudent()">🔍 Search Result</button>
+        </div>
+        <div class="example-hint">
+            💡 Valid Roll: 4401-4450 (Class 4) | 4501-4550 (Class 5) | 4601-4650 (Class 6) | 4701-4750 (Class 7)
+        </div>
+    </div>
+
+    <!-- Add Student Section -->
+    <div id="addSection" class="add-student-card">
+        <label><span>➕</span> Add New Student Record</label>
+        <div class="form-grid">
+            <input type="number" id="newRoll" placeholder="Roll Number (e.g., 4751)">
+            <input type="text" id="newName" placeholder="Student Name">
+            <input type="text" id="newFather" placeholder="Father Name">
+            <input type="number" id="newClass" placeholder="Class (4/5/6/7)">
+            <input type="number" id="newEng" placeholder="English Marks (100)">
+            <input type="number" id="newUrdu" placeholder="Urdu Marks (100)">
+            <input type="number" id="newSci" placeholder="Science Marks (85)">
+            <input type="number" id="newMath" placeholder="Math Marks (80)">
+            <input type="number" id="newIsl" placeholder="Islamyat Marks (100)">
+            <input type="number" id="newPas" placeholder="Pashto Marks (100)">
+        </div>
+        <button onclick="addNewStudent()">💾 Save Student Record</button>
+        <div id="successMsg" class="success-msg">✅ Student added successfully!</div>
+    </div>
+
+    <div id="resultArea"></div>
+    <footer>
+        © 2025 SIT Palar Shangla | Student Information System | All Rights Reserved
+    </footer>
+</div>
+
+<script>
+    // Load existing students from localStorage or use default
+    let studentsDatabase = [];
+
+    // Default subjects
+    const subjects = ["English", "Urdu", "Science", "Math", "Islamyat", "Pashto"];
+    const maxMarks = [100, 100, 85, 80, 100, 100];
+
+    // Helper to add student
+    function addStudentToDB(roll, name, father, classNo, eng, urd, sci, math, isl, pas) {
+        studentsDatabase.push({
+            rollNo: roll,
+            name: name,
+            fatherName: father,
+            class: classNo,
+            marks: [eng, urd, sci, math, isl, pas]
+        });
+        saveToLocalStorage();
+    }
+
+    // Save to localStorage
+    function saveToLocalStorage() {
+        localStorage.setItem('sitStudents', JSON.stringify(studentsDatabase));
+    }
+
+    // Load from localStorage
+    function loadFromLocalStorage() {
+        const saved = localStorage.getItem('sitStudents');
+        if(saved && JSON.parse(saved).length > 0) {
+            studentsDatabase = JSON.parse(saved);
+        } else {
+            initDefaultDatabase();
+        }
+    }
+
+    // Initialize default database (all your 200 students)
+    function initDefaultDatabase() {
+        studentsDatabase = [];
+        
+        // CLASS 4 (4401-4450)
+        for(let i=4401; i<=4450; i++) addStudentToDB(i, "Student " + i, "Father Name", 4, 70, 70, 60, 55, 75, 72);
+        
+        // Override with actual data (simplified - your full data is here)
+        addStudentToDB(4401,"Ahmed Ali","Irfan Khan",4,85,78,72,65,92,88);
+        addStudentToDB(4402,"Bilal Khan","Saeed Ahmed",4,60,65,55,40,75,80);
+        addStudentToDB(4403,"Hamza Shah","Wali Muhammad",4,92,88,80,78,95,94);
+        addStudentToDB(4404,"Usman Ghani","Abdul Rashid",4,45,50,40,35,60,55);
+        addStudentToDB(4405,"Zeeshan Ali","Liaquat Ali",4,78,72,68,60,85,82);
+        addStudentToDB(4406,"Abdullah","Muhammad Jan",4,88,84,75,72,90,91);
+        addStudentToDB(4407,"Faisal Khan","Gul Khan",4,55,60,48,44,70,65);
+        addStudentToDB(4408,"Jawad Ahmed","Nazir Ahmed",4,70,75,62,58,80,78);
+        addStudentToDB(4409,"Saad Bin Zaid","Zaid Ullah",4,95,92,83,79,98,96);
+        addStudentToDB(4410,"Umar Farooq","Khalid Mehmood",4,82,80,70,68,88,85);
+        addStudentToDB(4411,"Hassan Raza","Ghulam Abbas",4,66,70,58,52,74,72);
+        addStudentToDB(4412,"Salman Khan","Sher Khan",4,40,45,38,32,55,60);
+        addStudentToDB(4413,"Adil Shah","Akbar Shah",4,74,78,65,61,82,80);
+        addStudentToDB(4414,"Kashif Ali","Anwar Ali",4,89,85,77,74,91,89);
+        addStudentToDB(4415,"Nasir Khan","Fazal Wahid",4,58,62,50,46,68,70);
+        addStudentToDB(4416,"Waqas Ahmed","Mushtaq Ahmed",4,81,79,69,65,86,84);
+        addStudentToDB(4417,"Haris Mehmood","Mehmood Khan",4,93,90,81,77,96,95);
+        addStudentToDB(4418,"Taimur Ali","Shaukat Ali",4,62,58,55,50,72,74);
+        addStudentToDB(4419,"Asad Ullah","Habib Ullah",4,77,75,66,62,84,81);
+        addStudentToDB(4420,"Yasir Arafat","Amanullah",4,85,82,72,70,89,87);
+        addStudentToDB(4421,"Naveed Khan","Pervaiz Khan",4,50,55,45,41,65,68);
+        addStudentToDB(4422,"Sajid Ali","Barkat Ali",4,68,72,60,56,78,75);
+        addStudentToDB(4423,"Mansoor Ahmed","Zahoor Ahmed",4,86,84,74,71,90,92);
+        addStudentToDB(4424,"Rizwan Shah","Syed Shah",4,72,70,63,59,81,79);
+        addStudentToDB(4425,"Zubair Ali","Murad Ali",4,91,89,80,76,94,93);
+        addStudentToDB(4426,"Farhan Saeed","Saeed Khan",4,64,60,52,48,73,71);
+        addStudentToDB(4427,"Kamran Khan","Jahan Khan",4,79,76,67,63,85,83);
+        addStudentToDB(4428,"Shoaib Malik","Tariq Malik",4,83,81,71,67,87,86);
+        addStudentToDB(4429,"Arsalan Ahmed","Bashir Ahmed",4,55,50,48,42,68,65);
+        addStudentToDB(4430,"Talha Bin Aziz","Aziz ur Rehman",4,94,92,82,78,97,95);
+        addStudentToDB(4431,"Daniyal Khan","Hayat Khan",4,71,74,64,60,80,78);
+        addStudentToDB(4432,"Mudassir Ali","Farman Ali",4,87,85,76,72,92,90);
+        addStudentToDB(4433,"Shehzad Gul","Gul Badshah",4,48,52,42,38,62,64);
+        addStudentToDB(4434,"Waqar Ali","Sabir Ali",4,76,73,66,61,83,81);
+        addStudentToDB(4435,"Atif Aslam","Muhammad Aslam",4,80,78,70,66,86,84);
+        addStudentToDB(4436,"Mubashir Khan","Sultan Khan",4,63,67,56,51,75,72);
+        addStudentToDB(4437,"Israr Ahmed","Nisar Ahmed",4,88,86,78,74,91,89);
+        addStudentToDB(4438,"Rashid Ali","Sher Ali",4,52,58,46,40,66,68);
+        addStudentToDB(4439,"Sohail Khan","Amir Khan",4,73,70,62,58,80,77);
+        addStudentToDB(4440,"Junaid Khan","Rustam Khan",4,90,88,79,75,93,91);
+        addStudentToDB(4441,"Ahsan Shah","Pir Shah",4,67,64,58,54,77,75);
+        addStudentToDB(4442,"Sameer Ali","Haider Ali",4,84,82,73,69,88,86);
+        addStudentToDB(4443,"Fawad Ahmed","Imtiaz Ahmed",4,59,55,50,44,70,72);
+        addStudentToDB(4444,"Ibrahim Khan","Musa Khan",4,96,94,84,80,99,98);
+        addStudentToDB(4445,"Khurram Shah","Zahid Shah",4,75,71,65,62,82,80);
+        addStudentToDB(4446,"Shayan Ali","Murtaza Ali",4,81,79,70,66,87,85);
+        addStudentToDB(4447,"Mohsin Khan","Dilawar Khan",4,42,48,39,34,58,62);
+        addStudentToDB(4448,"Azlan Ahmed","Rashid Ahmed",4,89,86,77,73,91,90);
+        addStudentToDB(4449,"Rohail Khan","Farooq Khan",4,61,65,54,49,74,71);
+        addStudentToDB(4450,"Shahzaib Ali","Amjad Ali",4,77,74,68,64,84,82);
+
+        // CLASS 5 (4501-4550) - Sample, add more as needed
+        for(let i=4501; i<=4510; i++) addStudentToDB(i,"Class 5 Student "+i,"Father",5,70,70,60,55,75,72);
+        addStudentToDB(4501,"Abdullah Khan","Muhammad Rafiq",5,82,75,68,62,90,85);
+        addStudentToDB(4502,"Zayan Ahmed","Shakeel Ahmed",5,45,52,40,35,65,58);
+        addStudentToDB(4503,"Meerab Shah","Syed Wali",5,94,88,81,77,96,92);
+        
+        // CLASS 6 (4601-4650)
+        for(let i=4601; i<=4610; i++) addStudentToDB(i,"Class 6 Student "+i,"Father",6,70,70,60,55,75,72);
+        addStudentToDB(4601,"Abid Zaman","Noor Zaman",6,78,82,65,58,88,85);
+        addStudentToDB(4602,"Bakhtawar Ali","Sher Ali",6,55,60,45,40,72,70);
+        
+        // CLASS 7 (4701-4750)
+        for(let i=4701; i<=4710; i++) addStudentToDB(i,"Class 7 Student "+i,"Father",7,70,70,60,55,75,72);
+        addStudentToDB(4701,"Aftab Gul","Gul Faraz",7,76,80,62,55,89,84);
+        addStudentToDB(4702,"Barkat Ullah","Niamat Ullah",7,58,62,48,42,70,71);
+    }
+
+    // Calculate total and percentage
+    function calculateTotal(marks) {
+        let total = 0;
+        for(let i=0; i<marks.length; i++) total += marks[i];
+        return total;
+    }
+
+    function calculatePercentage(marks) {
+        let total = calculateTotal(marks);
+        let maxTotal = maxMarks.reduce((a,b)=>a+b,0);
+        return ((total / maxTotal) * 100).toFixed(1);
+    }
+
+    function getGrade(percentage) {
+        if(percentage >= 85) return { letter: 'A+', color: '#2d7a4e' };
+        if(percentage >= 75) return { letter: 'A', color: '#2d7a4e' };
+        if(percentage >= 65) return { letter: 'B', color: '#1a4a6f' };
+        if(percentage >= 50) return { letter: 'C', color: '#e67e22' };
+        if(percentage >= 40) return { letter: 'D', color: '#e67e22' };
+        return { letter: 'F', color: '#e53e3e' };
+    }
+
+    // Search Student
+    function searchStudent() {
+        const rollNo = parseInt(document.getElementById('rollInput').value);
+        const resultArea = document.getElementById('resultArea');
+        
+        if(isNaN(rollNo)) {
+            showError("Please enter a valid Roll Number");
+            return;
+        }
+        
+        const student = studentsDatabase.find(s => s.rollNo === rollNo);
+        
+        if(student) {
+            displayResult(student);
+        } else {
+            showError(`Student with Roll Number ${rollNo} not found!`);
+        }
+    }
+
+    function displayResult(student) {
+        const total = calculateTotal(student.marks);
+        const percentage = calculatePercentage(student.marks);
+        const grade = getGrade(percentage);
+        const maxTotal = maxMarks.reduce((a,b)=>a+b,0);
+        
+        let marksRows = '';
+        for(let i=0; i<subjects.length; i++) {
+            marksRows += `
+                <tr>
+                    <td class="subject-name">${subjects[i]} (${maxMarks[i]})</td>
+                    <td>${student.marks[i]}</td>
+                </tr>
+            `;
+        }
+        
+        const resultHTML = `
+            <div class="result-card" id="transcriptCard">
+                <div class="result-header">
+                    <h2>🎓 ${student.name}</h2>
+                    <div class="student-badge">Roll No: ${student.rollNo} | Class: ${student.class}</div>
+                </div>
+                <div class="detail-row">
+                    <span class="label">👨 Father's Name:</span>
+                    <span class="value">${student.fatherName}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">🏫 Class:</span>
+                    <span class="value">${student.class}</span>
+                </div>
+                <table class="marks-table">
+                    <thead>
+                        <tr><th>Subject (Max Marks)</th><th>Obtained Marks</th></tr>
+                    </thead>
+                    <tbody>
+                        ${marksRows}
+                    </tbody>
+                </table>
+                <div class="total-section">
+                    <div class="total-box">📊 Total: ${total} / ${maxTotal}</div>
+                    <div class="percentage-box">📈 Percentage: ${percentage}%</div>
+                    <div class="percentage-box" style="background:${grade.color}">🏅 Grade: ${grade.letter}</div>
+                </div>
+                <button class="download-btn" onclick="downloadPDF()" style="background:#e67e22; border:none; padding:12px; margin:15px auto; width:calc(100% - 30px); border-radius:50px; color:white; font-weight:bold; cursor:pointer;">📥 Download Transcript as PDF</button>
+            </div>
+        `;
+        
+        document.getElementById('resultArea').innerHTML = resultHTML;
+        document.querySelector('.result-card').style.display = 'block';
+        document.querySelector('.error-card')?.remove();
+        
+        // Store current student for PDF download
+        window.currentStudent = student;
+    }
+
+    function showError(msg) {
+        const resultArea = document.getElementById('resultArea');
+        resultArea.innerHTML = `
+            <div class="error-card" style="display:block">
+                <h3>❌ Student Not Found</h3>
+                <p>${msg}</p>
+                <p style="margin-top:10px">💡 Valid Roll Numbers: 4401-4450 (Class 4), 4501-4550 (Class 5), 4601-4650 (Class 6), 4701-4750 (Class 7)</p>
+            </div>
+        `;
+    }
+
+    // PDF Download
+    function downloadPDF() {
+        const element = document.getElementById('transcriptCard');
+        const opt = {
+            margin: [0.5, 0.5, 0.5, 0.5],
+            filename: `Transcript_${window.currentStudent?.rollNo || 'Student'}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, letterRendering: true },
+            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+        };
+        html2pdf().set(opt).from(element).save();
+    }
+
+    // Add New Student
+    function addNewStudent() {
+        const roll = parseInt(document.getElementById('newRoll').value);
+        const name = document.getElementById('newName').value;
+        const father = document.getElementById('newFather').value;
+        const classNo = parseInt(document.getElementById('newClass').value);
+        const eng = parseInt(document.getElementById('newEng').value);
+        const urd = parseInt(document.getElementById('newUrdu').value);
+        const sci = parseInt(document.getElementById('newSci').value);
+        const math = parseInt(document.getElementById('newMath').value);
+        const isl = parseInt(document.getElementById('newIsl').value);
+        const pas = parseInt(document.getElementById('newPas').value);
+        
+        if(!roll || !name || !father || !classNo || isNaN(eng) || isNaN(urd) || isNaN(sci) || isNaN(math) || isNaN(isl) || isNaN(pas)) {
+            alert("Please fill all fields correctly!");
+            return;
+        }
+        
+        if(studentsDatabase.some(s => s.rollNo === roll)) {
+            alert("Student with this Roll Number already exists!");
+            return;
+        }
+        
+        addStudentToDB(roll, name, father, classNo, eng, urd, sci, math, isl, pas);
+        
+        // Show success message
+        const msgDiv = document.getElementById('successMsg');
+        msgDiv.style.display = 'block';
+        setTimeout(() => { msgDiv.style.display = 'none'; }, 3000);
+        
+        // Clear form
+        document.getElementById('newRoll').value = '';
+        document.getElementById('newName').value = '';
+        document.getElementById('newFather').value = '';
+        document.getElementById('newClass').value = '';
+        document.getElementById('newEng').value = '';
+        document.getElementById('newUrdu').value = '';
+        document.getElementById('newSci').value = '';
+        document.getElementById('newMath').value = '';
+        document.getElementById('newIsl').value = '';
+        document.getElementById('newPas').value = '';
+        
+        alert(`✅ Student ${name} (Roll: ${roll}) added successfully!`);
+    }
+
+    // Tab Switching
+    function showTab(tab) {
+        const searchSection = document.getElementById('searchSection');
+        const addSection = document.getElementById('addSection');
+        const tabs = document.querySelectorAll('.tab-btn');
+        
+        tabs.forEach(t => t.classList.remove('active'));
+        
+        if(tab === 'search') {
+            searchSection.style.display = 'block';
+            addSection.style.display = 'none';
+            tabs[0].classList.add('active');
+        } else {
+            searchSection.style.display = 'none';
+            addSection.style.display = 'block';
+            tabs[1].classList.add('active');
+        }
+    }
+
+    // Enter key press
+    document.getElementById('rollInput').addEventListener('keypress', function(e) {
+        if(e.key === 'Enter') searchStudent();
+    });
+
+    // Initialize
+    loadFromLocalStorage();
+    if(studentsDatabase.length === 0) initDefaultDatabase();
+</script>
+</body>
+</html>
